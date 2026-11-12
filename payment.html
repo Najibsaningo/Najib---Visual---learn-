@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Pay KSh 50 - Najib Visual Learn</title>
+<style>body{font-family:Arial;padding:20px;max-width:480px;margin:auto;background:#f8f9ff}input,select{width:100%;padding:12px;margin:8px 0;border:1px solid #ccc;border-radius:10px;box-sizing:border-box}button{width:100%;padding:15px;background:#6a00ff;color:#fff;border:0;border-radius:10px;font-size:17px;font-weight:bold} .box{background:#fff;padding:22px;border-radius:14px}</style></head>
+<body><div class="box">
+<h2 style="margin:0">Najib Visual Learn</h2>
+<p>Pay <b>KSh 50</b> for Exam / Certificate</p>
+<div style="background:#fff7e6;padding:12px;border-radius:10px">
+<b>Step 1:</b> M-Pesa > Send Money<br>
+<b>To:</b> <b style="font-size:20px">0708297075</b><br>
+<b>Amount:</b> <b>KSh 50</b><br>
+<b>Step 2:</b> Paste M-Pesa code below
+</div><br>
+<input id="name" placeholder="Full Name">
+<input id="phone" placeholder="Your Phone e.g 0708297075">
+<select id="course"><option>Affiliate Marketing</option><option>Academic Writing</option><option>Video Editing</option><option>Research and Online Services</option><option>Content Writing</option><option>Digital Marketing</option></select>
+<input id="code" placeholder="M-Pesa Code e.g QK123ABC">
+<button onclick="pay()">Submit Payment for Review</button>
+<p id="msg" style="text-align:center"></p>
+<p style="text-align:center;font-size:13px"><a href="./">← Back to Home</a></p>
+</div>
+<script>
+async function pay(){
+ const data={name:document.getElementById('name').value.trim(),phone:document.getElementById('phone').value.trim(),course:document.getElementById('course').value,mpesa_code:document.getElementById('code').value.trim().toUpperCase(),amount:50};
+ if(!data.name||!data.phone||!data.mpesa_code){document.getElementById('msg').innerText='❌ Fill Name, Phone and M-Pesa Code';return}
+ document.getElementById('msg').innerText='Sending... please wait';
+ try{
+ const r=await fetch('https://najib-visual-learn-payments.najibsaningo64.workers.dev/api/payment-requests',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)});
+ const j=await r.json();
+ document.getElementById('msg').innerText=j.ok?'✅ Sent! Pending review. Najib will approve you on WhatsApp soon.':'❌ Error: '+JSON.stringify(j);
+ }catch(e){document.getElementById('msg').innerText='❌ Network error, try again'}
+}
+</script></body></html>
